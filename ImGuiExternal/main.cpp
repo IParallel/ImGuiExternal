@@ -125,7 +125,6 @@ void checkIfMenu()
 void MainLoop() {
 	static RECT OldRect;
 	ZeroMemory(&DirectX9.Message, sizeof(MSG));
-	std::thread(checkIfMenu).detach();
 	ImGui::GetIO().IniFilename = NULL;
 	while (DirectX9.Message.message != WM_QUIT) {
 		if (PeekMessage(&DirectX9.Message, Overlay.Hwnd, 0, 0, PM_REMOVE)) {
@@ -314,7 +313,8 @@ int main() {
 			WindowFocus = true;
 		}
 	}
-
+	
+	std::thread(checkIfMenu).detach();
 	Overlay.Name = RandomString(10).c_str();
 	SetupWindow();
 	DirectXInit();
