@@ -171,6 +171,7 @@
     <ClCompile Include="Directories\ImGui\imgui_tables.cpp" />
     <ClCompile Include="Directories\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\Overlay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Directories\ImGui\imconfig.h" />
@@ -182,7 +183,7 @@
     <ClInclude Include="Directories\ImGui\imstb_textedit.h" />
     <ClInclude Include="Directories\ImGui\imstb_truetype.h" />
     <ClInclude Include="Functions.h" />
-    <ClInclude Include="Overlay.h" />
+    <ClInclude Include="src\Overlay.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
