@@ -9,6 +9,8 @@
 #include <dwmapi.h>
 #include <ctime>
 #include <thread>
+#include <stdexcept>
+#include <d3dx9tex.h>
 
 struct CurrentProcess {
 	DWORD ID;
@@ -309,6 +311,23 @@ DWORD WINAPI Overlay::ProcessCheck(LPVOID lpParameter) {
 	}
 }
 
+ImTextureID Overlay::LoadTextureFromMemory(const void* imageData, size_t imageSize) {
+	if (!DirectX9.pDevice || !imageData || imageSize == 0) {
+		throw std::invalid_argument("Invalid parameters passed to LoadTextureFromMemory.");
+	}
+
+	// Create a DirectX9 texture from the image data in memory
+	LPDIRECT3DTEXTURE9 texture = nullptr;
+	HRESULT result = D3DXCreateTextureFromFileInMemory(DirectX9.pDevice, imageData, static_cast<UINT>(imageSize), &texture);
+
+	if (FAILED(result)) {
+		throw std::runtime_error("Failed to create texture from memory.");
+	}
+
+	// Return the texture as an ImTextureID
+	return reinterpret_cast<ImTextureID>(texture);
+}
+
 void Overlay::MainLoop() {
 	static RECT OldRect;
 	ZeroMemory(&DirectX9.Message, sizeof(MSG));
@@ -402,6 +421,10 @@ void Overlay::Start()
 	_OverlayWindow.Name = RandomString(10).c_str();
 	SetupWindow();
 	DirectXInit();
+
+	if (_preInitFunction)
+		_preInitFunction(this);
+
 	std::thread(ProcessCheck);
 	while (TRUE) {
 		MainLoop();

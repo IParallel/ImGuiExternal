@@ -3,6 +3,8 @@
 #include <string>
 #include <d3d9.h>
 #include <functional>
+#include <imgui.h>
+
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "dwmapi.lib")
 
@@ -26,6 +28,10 @@ public:
 
     void SetDrawFunction(const std::function<void(Overlay*)>& drawFunction) {
         _drawFunction = drawFunction;
+    }
+
+    void SetPreInitFunction(const std::function<void(Overlay*)> preInit) {
+        _preInitFunction = preInit;
     }
 
     std::string RandomString(int len);
@@ -61,6 +67,8 @@ public:
 
     // Draws a cornered box
     void DrawCornerBox(int x, int y, int w, int h, int borderPx, RGBA* color);
+    // Loads an image from memory and returns an ImTextureID
+    ImTextureID LoadTextureFromMemory(const void* imageData, size_t imageSize);
 
     void Start();
 
@@ -68,6 +76,7 @@ public:
 private:
     std::function<void(Overlay*)> _renderFunction;
     std::function<void(Overlay*)> _drawFunction;
+    std::function<void(Overlay*)> _preInitFunction;
     bool DirectXInit();
     void SetupWindow();
     void InputHandler();

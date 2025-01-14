@@ -67,5 +67,6 @@
       <Filter>ImGui</Filter>
     </ClInclude>
     <ClInclude Include="src\Overlay.h" />
+    <ClInclude Include="file.hpp" />
   </ItemGroup>
 </Project>
