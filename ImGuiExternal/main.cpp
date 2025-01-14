@@ -4,7 +4,6 @@
 #include <psapi.h>
 #include <dwmapi.h>
 #include <d3d9.h>
-#include "Functions.h"
 #include <thread>
 #include "src/Overlay.h"
 #include <imgui.h>
