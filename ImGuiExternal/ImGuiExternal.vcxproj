@@ -182,7 +182,6 @@
     <ClInclude Include="Directories\ImGui\imstb_rectpack.h" />
     <ClInclude Include="Directories\ImGui\imstb_textedit.h" />
     <ClInclude Include="Directories\ImGui\imstb_truetype.h" />
-    <ClInclude Include="Functions.h" />
     <ClInclude Include="src\Overlay.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

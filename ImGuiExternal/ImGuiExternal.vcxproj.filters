@@ -42,9 +42,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Functions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Directories\ImGui\imconfig.h">
       <Filter>ImGui</Filter>
     </ClInclude>
