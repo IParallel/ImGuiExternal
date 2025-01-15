@@ -4,6 +4,9 @@
 #include <d3d9.h>
 #include <functional>
 #include <imgui.h>
+#include <tlhelp32.h>
+#include <psapi.h>
+#include <dwmapi.h>
 
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "dwmapi.lib")
@@ -14,6 +17,40 @@ typedef struct {
     DWORD B;
     DWORD A;
 } RGBA;
+
+struct CurrentProcess {
+	DWORD ID;
+	HANDLE Handle;
+	HWND Hwnd;
+	WNDPROC WndProc;
+	int WindowWidth;
+	int WindowHeight;
+	int WindowLeft;
+	int WindowRight;
+	int WindowTop;
+	int WindowBottom;
+	LPCSTR Title;
+	LPCSTR ClassName;
+	LPCSTR Path;
+};
+inline CurrentProcess Process;
+
+struct OverlayWindow {
+	WNDCLASSEX WindowClass;
+	HWND Hwnd;
+	LPCSTR Name;
+};
+inline OverlayWindow _OverlayWindow;
+
+struct DirectX9Interface {
+	IDirect3D9Ex* IDirect3D9 = NULL;
+	IDirect3DDevice9Ex* pDevice = NULL;
+	D3DPRESENT_PARAMETERS pParameters = { NULL };
+	MARGINS Margin = { 0, 0, 0, 0 };
+	MSG Message = { NULL };
+};
+
+inline DirectX9Interface DirectX9;
 
 class Overlay
 {
@@ -74,6 +111,7 @@ public:
 
     bool ShowMenu = true;
 private:
+    POINT windowSize;
     std::function<void(Overlay*)> _renderFunction;
     std::function<void(Overlay*)> _drawFunction;
     std::function<void(Overlay*)> _preInitFunction;

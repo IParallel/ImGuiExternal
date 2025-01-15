@@ -4,43 +4,11 @@
 #include <imgui_impl_dx9.h>
 #include <imgui_impl_win32.h>
 
-#include <tlhelp32.h>
-#include <psapi.h>
-#include <dwmapi.h>
 #include <ctime>
 #include <thread>
 #include <stdexcept>
 #include <d3dx9tex.h>
-
-struct CurrentProcess {
-	DWORD ID;
-	HANDLE Handle;
-	HWND Hwnd;
-	WNDPROC WndProc;
-	int WindowWidth;
-	int WindowHeight;
-	int WindowLeft;
-	int WindowRight;
-	int WindowTop;
-	int WindowBottom;
-	LPCSTR Title;
-	LPCSTR ClassName;
-	LPCSTR Path;
-}Process;
-
-struct OverlayWindow {
-	WNDCLASSEX WindowClass;
-	HWND Hwnd;
-	LPCSTR Name;
-}_OverlayWindow;
-
-struct DirectX9Interface {
-	IDirect3D9Ex* IDirect3D9 = NULL;
-	IDirect3DDevice9Ex* pDevice = NULL;
-	D3DPRESENT_PARAMETERS pParameters = { NULL };
-	MARGINS Margin = { -1 };
-	MSG Message = { NULL };
-}DirectX9;
+#include <iostream>
 
 DWORD Overlay::GetProcessId(LPCSTR ProcessName) {
 	PROCESSENTRY32 pt;
@@ -360,6 +328,8 @@ void Overlay::MainLoop() {
 			OldRect = TempRect;
 			Process.WindowWidth = TempRect.right;
 			Process.WindowHeight = TempRect.bottom;
+			windowSize.x = Process.WindowWidth;
+			windowSize.y = Process.WindowHeight;
 			DirectX9.pParameters.BackBufferWidth = Process.WindowWidth;
 			DirectX9.pParameters.BackBufferHeight = Process.WindowHeight;
 			SetWindowPos(_OverlayWindow.Hwnd, (HWND)0, TempPoint.x, TempPoint.y, Process.WindowWidth, Process.WindowHeight, SWP_NOREDRAW);
@@ -384,6 +354,7 @@ void Overlay::MainLoop() {
 void Overlay::Start()
 {
 	bool WindowFocus = false;
+	std::cout << "Waiting for " << TargetProcess << " to be opened...\n";
 	while (WindowFocus == false) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		DWORD ForegroundWindowProcessID;
@@ -401,6 +372,8 @@ void Overlay::Start()
 			Process.WindowRight = TempRect.right;
 			Process.WindowTop = TempRect.top;
 			Process.WindowBottom = TempRect.bottom;
+			windowSize.x = Process.WindowWidth;
+			windowSize.y = Process.WindowHeight;
 
 			char TempTitle[MAX_PATH];
 			GetWindowText(Process.Hwnd, TempTitle, sizeof(TempTitle));
@@ -418,6 +391,9 @@ void Overlay::Start()
 		}
 	}
 
+	std::cout << "Process found initializing...\n";
+	std::this_thread::sleep_for(std::chrono::seconds(1));
+	ShowWindow(GetConsoleWindow(), SW_HIDE);
 	_OverlayWindow.Name = RandomString(10).c_str();
 	SetupWindow();
 	DirectXInit();
