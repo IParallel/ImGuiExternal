@@ -36,14 +36,10 @@
   }
 
   int main() {
-	if (CreateConsole == false)
-		ShowWindow(GetConsoleWindow(), SW_HIDE);
-
 	Overlay overlay("your_process_name.exe");
 	overlay.SetRenderFunction(Render); // helper functions
 	overlay.SetDrawFunction(Draw);
 	overlay.SetPreInitFunction(PreInit);
 	overlay.Start(); // this is a blocking call
-
   }
   ```
