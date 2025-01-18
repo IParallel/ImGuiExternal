@@ -15,13 +15,13 @@ bool CreateConsole = true;
 
 ImTextureID image;
 
-void Render(Overlay* overlay) {
+void Render(OverlayApp* overlay) {
 	ImGui::Begin("Tetas");
 	ImGui::Text("Tetas");
 	ImGui::End();
 }
 
-void Draw(Overlay* overlay) {
+void Draw(OverlayApp* overlay) {
 	char FpsInfo[64];
 	sprintf(FpsInfo, "Overlay FPS: %0.f", ImGui::GetIO().Framerate);
 	auto dl = ImGui::GetForegroundDrawList();
@@ -31,7 +31,7 @@ void Draw(Overlay* overlay) {
 }
 
 
-void PreInit(Overlay* overlay) {
+void PreInit(OverlayApp* overlay) {
 	image = overlay->LoadTextureFromMemory((void*)icon, sizeof(icon));
 }
 
@@ -40,10 +40,10 @@ int main() {
 	if (CreateConsole == false)
 		ShowWindow(GetConsoleWindow(), SW_HIDE);
 
-	Overlay overlay("FiveM_GTAProcess.exe");
+	OverlayApp overlay("Discord.exe");
 	overlay.SetRenderFunction(Render);
 	overlay.SetDrawFunction(Draw);
 	overlay.SetPreInitFunction(PreInit);
-	overlay.Start();
+	overlay.Run();
 
 }
